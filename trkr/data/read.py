@@ -25,10 +25,10 @@ GET_ALL_PROJECTS_SQL = """
 
 GET_ALL_LOGS_SQL = """
     SELECT 
-        projects.id, 
         projects.name,
-        work_log.description,
-        work_log.hours
+        SUBSTR(work_log.description, 0, 45),
+        work_log.hours,
+        work_log.created_at
     FROM 
         work_log 
     LEFT JOIN
@@ -61,12 +61,17 @@ def get_all_projects(cursor) -> tuple:
     return res.fetchall()
 
 
-def get_all_logs(cursor) -> tuple:
+def get_all_logs(cursor, project=None) -> tuple:
     """
     Returns all work logs
 
     :param cursor: database cursor (SQLite)
+    :param project: optionally filter logs by  project
     """
-    res = cursor.execute(GET_ALL_LOGS_SQL)
+    if project:
+        sql = GET_ALL_LOGS_SQL + ' WHERE projects.name = ?'
+        res = cursor.execute(sql, (project,))
+    else:
+        res = cursor.execute(GET_ALL_LOGS_SQL)
 
     return res.fetchall()
