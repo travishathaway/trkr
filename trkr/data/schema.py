@@ -14,9 +14,18 @@ CREATE TABLE work_log (
 PROJECT_TABLE_DDL = """
 CREATE TABLE projects (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
+    name TEXT UNIQUE,
+    client_id INTEGER
+)
+"""
+
+CLIENT_TABLE_DDL = """
+CREATE TABLE clients (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
     name TEXT UNIQUE
 )
 """
+
 
 def create_schema(cursor) -> None:
     """
@@ -25,6 +34,7 @@ def create_schema(cursor) -> None:
     :param cursor: sqllite3 cursor
     """
     cursor.execute(PROJECT_TABLE_DDL)
+    cursor.execute(CLIENT_TABLE_DDL)
     cursor.execute(WORK_LOG_TABLE_DDL)
 
     # Insert the default project
@@ -38,4 +48,5 @@ def delete_schema(cursor) -> None:
     :param cursor: sqllite3 cursor
     """
     cursor.execute("DROP TABLE projects")
+    cursor.execute("DROP TABLE clients")
     cursor.execute("DROP TABLE work_log")

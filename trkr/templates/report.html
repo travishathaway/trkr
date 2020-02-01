@@ -5,10 +5,10 @@
         size: a4 portrait;
         @frame header_frame {           /* Static Frame */
             -pdf-frame-content: header_content;
-            left: 50pt; width: 512pt; top: 50pt; height: 40pt;
+            left: 50pt; width: 512pt; top: 50pt; height: 100pt;
         }
         @frame content_frame {          /* Content Frame */
-            left: 50pt; width: 512pt; top: 90pt; height: 632pt;
+            left: 50pt; width: 512pt; top: 150pt; height: 572pt;
         }
         @frame footer_frame {           /* Another static Frame */
             -pdf-frame-content: footer_content;
@@ -20,20 +20,70 @@
 
 <body>
     <!-- Content for Static Frame 'header_frame' -->
-    <div id="header_content">Lyrics-R-Us</div>
+    <div id="header_content">
+        <div id="invoice-address">
+            <table>
+                <tr>
+                    <td width="80%">
+                        <h1 style="font-size: 32pt; float: left">Invoice</h1>
+                    </td>
+                    <td width="20%">
+                        <p>
+                            <b>{{company_name}}</b><br />
+                            {{addr_line_1}} <br />
+                            {{addr_line_2}}
+                        </p>
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
 
     <!-- Content for Static Frame 'footer_frame' -->
     <div id="footer_content">(c) - page <pdf:pagenumber>
         of <pdf:pagecount>
     </div>
 
+    <table>
+        <tr>
+            <td width="100">
+                <h3>Invoice Number</h3>
+            </td>
+            <td width="100">
+                <h3>Date of issue</h3>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                {{invoice_id}}
+            </td>
+            <td>
+                {{today_str}}
+            </td>
+        </tr>
+    </table>
+
+    <br />
+    <table>
+        <tr>
+            <td width="100">
+                <h3>Billed To</h3>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                {{client}}
+                CAPA Strategies LLC.
+            </td>
+        </tr>
+    </table>
+
+    <hr />
     <!-- HTML Content -->
     <ul>
         {% for log in logs %}
         <li>{{log[0]}}, {{log[1]}}, {{log[2]}}, {{log[3]}}</li>
         {% endfor %}
     </ul>
-
-    To PDF or not to PDF
 </body>
 </html>

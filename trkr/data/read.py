@@ -37,6 +37,14 @@ GET_ALL_LOGS_SQL = """
         work_log.project_id = projects.id
 """
 
+GET_ALL_CLIENTS_SQL = """
+    SELECT id, name FROM clients
+"""
+
+GET_CLIENT_SQL = """
+    SELECT id, name FROM clients WHERE name = ?
+"""
+
 
 def get_project_by_name(cursor, *args) -> tuple:
     """
@@ -75,3 +83,27 @@ def get_all_logs(cursor, project=None) -> tuple:
         res = cursor.execute(GET_ALL_LOGS_SQL)
 
     return res.fetchall()
+
+
+def get_all_clients(cursor) -> tuple:
+    """
+    Returns all clients
+
+    :param cursor: database cursor (SQLite)
+    :param project: optionally filter logs by  project
+    """
+    res = cursor.execute(GET_ALL_CLIENTS_SQL)
+
+    return res.fetchall()
+
+
+def get_client(cursor, client_name) -> tuple:
+    """
+    Returns all clients
+
+    :param cursor: database cursor (SQLite)
+    :param client_name: client name
+    """
+    res = cursor.execute(GET_CLIENT_SQL, (client_name,))
+
+    return res.fetchone()

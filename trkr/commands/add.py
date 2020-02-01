@@ -4,8 +4,10 @@ import click
 
 from trkr.constants import DEFAULT_PROJECT_NAME
 from trkr.data.connect import get_connection
-from trkr.data.write import create_project, create_work_log
-from trkr.data.read import get_project_by_name
+from trkr.data.write import (
+    create_project, create_work_log, create_client, update_project
+)
+from trkr.data.read import get_project_by_name, get_client
 
 
 @click.command()
@@ -13,7 +15,9 @@ from trkr.data.read import get_project_by_name
 @click.argument('description', nargs=1)
 @click.option('--project', default=DEFAULT_PROJECT_NAME,
               help='Project name (default used if none provided)')
-def add(hours, description, project):
+@click.option('--client', default=None,
+              help='Client to associate project with (default is none)')
+def add(hours, description, project, client):
     """
     Adds a new work log item
     """
@@ -23,11 +27,24 @@ def add(hours, description, project):
     # This get or create proj block could be its own function
     proj = get_project_by_name(cur, project)
 
+    if client is not None:
+        client_rec = get_client(cur, client)
+
     if not proj:
         if click.confirm(f'Project {project} does not exist. create it?'):
             create_project(cur, project)
             conn.commit()
             proj = get_project_by_name(cur, project)
+        else:
+            click.echo("exiting without logging work")
+            sys.exit(0)
+
+    if not client_rec:
+        if click.confirm(f'Client {client} does not exist. create it?'):
+            create_client(cur, client)
+            conn.commit()
+            client_rec = get_client(cur, client)
+            update_project(cur, project_id=proj[0], client_id=client[0])
         else:
             click.echo("exiting without logging work")
             sys.exit(0)

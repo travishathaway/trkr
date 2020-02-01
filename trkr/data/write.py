@@ -3,6 +3,10 @@ CREATE_PROJECT_SQL = """
     INSERT INTO projects (name) VALUES (?)
 """
 
+CREATE_CLIENT_SQL = """
+    INSERT INTO clients (name) VALUES (?)
+"""
+
 CREATE_WORK_LOG_SQL = """
     INSERT INTO work_log (hours, description, project_id) VALUES (?, ?, ?)
 """
@@ -16,6 +20,32 @@ def create_project(cursor, *args) -> None:
     :param args: List of args to pass to insert statement
     """
     cursor.execute(CREATE_PROJECT_SQL, args)
+
+
+def update_project(cursor, project_id, **kwargs) -> None:
+    """
+    Updates an existing project using the provided *args
+
+    :param cursor: database cursor
+    :param project_id: project id
+    :param kwargs: Key, value pairs to use while updating the record
+    """
+    update_stmt = ', '.join(f'{k} = ?' for k in kwargs.keys())
+
+    update_project_sql = f"""
+        UPDATE projects SET {update_stmt} WHERE id = ?
+    """
+    cursor.execute(update_project_sql, tuple(kwargs.values()) + (project_id, ))
+
+
+def create_client(cursor, *args) -> None:
+    """
+    Creates a new client
+
+    :param cursor: database cursor
+    :param args: List of args to pass to insert statement
+    """
+    cursor.execute(CREATE_CLIENT_SQL, args)
 
 
 def create_work_log(cursor, hours: float, description: str, project_id: int) -> None:
