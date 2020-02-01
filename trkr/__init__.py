@@ -20,3 +20,4 @@ def cli():
 # Add commands
 cli.add_command(commands.show)
 cli.add_command(commands.add)
+cli.add_command(commands.report)
