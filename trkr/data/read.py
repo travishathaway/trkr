@@ -1,4 +1,3 @@
-
 GET_PROJECT_BY_NAME_SQL = """
     SELECT 
         id, name
@@ -43,6 +42,27 @@ GET_ALL_CLIENTS_SQL = """
 
 GET_CLIENT_SQL = """
     SELECT id, name FROM clients WHERE name = ?
+"""
+
+INVOICE_ITEMS_SQL = f"""
+    SELECT 
+        p.display_name, sum(wl.hours)
+    FROM 
+        work_log wl
+    LEFT JOIN
+        projects p
+    ON
+        p.id = wl.project_id
+    LEFT JOIN
+        clients c
+    ON
+        c.id = p.client_id
+    WHERE
+        c.name = ?
+    AND
+        wl.created_at BETWEEN ? AND ?
+    GROUP BY
+        p.display_name
 """
 
 
@@ -107,3 +127,19 @@ def get_client(cursor, client_name) -> tuple:
     res = cursor.execute(GET_CLIENT_SQL, (client_name,))
 
     return res.fetchone()
+
+
+def get_invoice_items(cursor, client_name, from_date, to_date) -> tuple:
+    """
+    Collect invoice items to present in a report. This invoice items are
+    simply the aggregated hours by project for the time period specified.
+
+    :param cursor:
+    :param client_name: Client name to collect invoice for
+    :param from_date: Begin date of the invoice
+    :param to_date: End date of the invoice
+    :return: tuple
+    """
+    res = cursor.execute(INVOICE_ITEMS_SQL, (client_name, from_date, to_date))
+
+    return res.fetchall()

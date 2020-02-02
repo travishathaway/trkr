@@ -15,6 +15,7 @@ PROJECT_TABLE_DDL = """
 CREATE TABLE projects (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     name TEXT UNIQUE,
+    display_name TEXT UNIQUE,
     client_id INTEGER
 )
 """
@@ -22,7 +23,8 @@ CREATE TABLE projects (
 CLIENT_TABLE_DDL = """
 CREATE TABLE clients (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    name TEXT UNIQUE
+    name TEXT UNIQUE,
+    display_name TEXT
 )
 """
 

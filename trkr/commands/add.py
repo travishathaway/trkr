@@ -26,9 +26,7 @@ def add(hours, description, project, client):
 
     # This get or create proj block could be its own function
     proj = get_project_by_name(cur, project)
-
-    if client is not None:
-        client_rec = get_client(cur, client)
+    client_rec = get_client(cur, client) if client else None
 
     if not proj:
         if click.confirm(f'Project {project} does not exist. create it?'):
@@ -39,12 +37,12 @@ def add(hours, description, project, client):
             click.echo("exiting without logging work")
             sys.exit(0)
 
-    if not client_rec:
+    if not client_rec and client is not None:
         if click.confirm(f'Client {client} does not exist. create it?'):
             create_client(cur, client)
             conn.commit()
             client_rec = get_client(cur, client)
-            update_project(cur, project_id=proj[0], client_id=client[0])
+            update_project(cur, project_id=proj[0], client_id=client_rec[0])
         else:
             click.echo("exiting without logging work")
             sys.exit(0)
