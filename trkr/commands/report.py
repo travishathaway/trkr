@@ -57,9 +57,14 @@ def report(**kwargs):
     today_str = today.strftime('%x')
     from_str = kwargs.get('from_date').strftime('%x')
     to_str = kwargs.get('to_date').strftime('%x')
+    hourly_rate = kwargs.get('hourly_rate')
+    total_amount = sum(x[1] * hourly_rate for x in invoice_items)
+    total_hours = sum(x[1] for x in invoice_items)
     template = Template(source_html)
     html = template.render(
-        invoice_items=invoice_items, today_str=today_str, from_str=from_str, to_str=to_str,
+        invoice_items=invoice_items, today_str=today_str,
+        from_str=from_str, to_str=to_str, total_amount=total_amount,
+        total_hours=total_hours,
         **kwargs
     )
 

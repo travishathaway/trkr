@@ -40,7 +40,8 @@
     </div>
 
     <!-- Content for Static Frame 'footer_frame' -->
-    <div id="footer_content">(c) - page <pdf:pagenumber>
+    <div id="footer_content">
+        page <pdf:pagenumber>
         of <pdf:pagecount>
     </div>
 
@@ -88,16 +89,16 @@
     <!-- HTML Content -->
     <table>
         <thead>
-        <th>
+        <th style="text-align: left" width="64%">
             Description
         </th>
-        <th>
+        <th style="text-align: right" width="12%">
             Hourly rate
         </th>
-        <th>
+        <th style="text-align: right" width="12%">
             Hours
         </th>
-        <th>
+        <th style="text-align: right" width="12%">
             Amount
         </th>
         </thead>
@@ -105,12 +106,21 @@
         {% for item in invoice_items %}
             <tr>
                 <td>{{item[0]}}</td>
-                <td>${{hourly_rate}}</td>
-                <td>{{item[1]}}</td>
-                <td>${{item[1] * hourly_rate}}</td>
+                <td style="text-align: right">${{ "%.2f"|format(hourly_rate) }}</td>
+                <td style="text-align: right">{{item[1]}}</td>
+                <td style="text-align: right">${{ "{:,.2f}".format(item[1] * hourly_rate) }}</td>
             </tr>
         {% endfor %}
         </tbody>
+    </table>
+    <hr />
+    <table style="font-size: 10pt">
+        <tr>
+            <td width="64%"></td>
+            <td style="text-align: right" width="12%"><b>Total</b></td>
+            <td style="text-align: right" width="12%"><b>{{ "{:,}".format(total_hours) }}</b></td>
+            <td style="text-align: right" width="12%"><b>${{ "{:,.2f}".format(total_amount) }}</b></td>
+        </tr>
     </table>
 </body>
 </html>

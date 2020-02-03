@@ -9,6 +9,7 @@ Options:
   --help  Show this message and exit.
 
 Commands:
-  add   Adds a new work log item
-  show  Shows the available projects
+  add     Adds a new work log item
+  report  Generate reports from work logs
+  show    Shows the available projects
 ```
