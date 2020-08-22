@@ -13,11 +13,13 @@ from trkr.data.read import get_project_by_name, get_client
 @click.command()
 @click.argument('hours', nargs=1)
 @click.argument('description', nargs=1)
-@click.option('--project', default=DEFAULT_PROJECT_NAME,
+@click.option('--project', '-p', default=DEFAULT_PROJECT_NAME,
               help='Project name (default used if none provided)')
-@click.option('--client', default=None,
+@click.option('--client', '-c', default=None,
               help='Client to associate project with (default is none)')
-def add(hours, description, project, client):
+@click.option('--created-at', '-d', default=None,
+              help='Override the created_at field (defaults to now)')
+def add(hours, description, project, client, created_at):
     """
     Adds a new work log item
     """
@@ -47,5 +49,5 @@ def add(hours, description, project, client):
             click.echo("exiting without logging work")
             sys.exit(0)
 
-    create_work_log(cur, hours, description, proj[0])
+    create_work_log(cur, hours, description, proj[0], created_at=created_at)
     conn.commit()
