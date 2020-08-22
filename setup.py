@@ -26,6 +26,8 @@ setup(
     url='https://github.com/travishathaway/trkr',
     packages=[
         'trkr',
+        'trkr.data',
+        'trkr.commands'
     ],
     entry_points={
         'console_scripts': [
@@ -35,6 +37,11 @@ setup(
     package_dir={'trkr': 'trkr'},
     include_package_data=True,
     install_requires=[
+        'requests==2.22.0',
+        'Click==7.0',
+        'tabulate==0.8.6',
+        'xhtml2pdf==0.2.4',
+        'Jinja2==2.10.3'
     ],
     license='MIT',
     zip_safe=False,
