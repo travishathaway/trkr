@@ -6,4 +6,5 @@
 
 ## Contributors
 
-None yet. Why not be the first?
+* Michael Jaquier <mjaquier@mjaquier.xyz>
+
