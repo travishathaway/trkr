@@ -41,7 +41,7 @@ setup(
         'Click==7.0',
         'tabulate==0.8.6',
         'xhtml2pdf==0.2.4',
-        'Jinja2==2.10.3'
+        'Jinja2==2.11.3'
     ],
     license='MIT',
     zip_safe=False,
