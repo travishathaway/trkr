@@ -37,7 +37,7 @@ setup(
     package_dir={'trkr': 'trkr'},
     include_package_data=True,
     install_requires=[
-        'requests==2.22.0',
+        'requests==2.31.0',
         'Click==7.0',
         'tabulate==0.8.6',
         'xhtml2pdf==0.2.4',
